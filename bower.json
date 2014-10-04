@@ -1,0 +1,12 @@
+{
+    "name": "angular-tasty-resource",
+    "version": "1.0.0",
+    "main": "./tasty-resource.js",
+    "repository": {
+	"type": "git",
+	"url": "https://github.com/demsullivan/angular-tasty-resource"
+    },
+    "dependencies": {
+	"angular": "~1.2.15"
+    }
+}
