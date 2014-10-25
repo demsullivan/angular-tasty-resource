@@ -23,7 +23,7 @@ root = exports ? this
 
 class root.TastyResourceFactory
 
-	constructor: (@$http, @_config)->
+	constructor: (@$http, @_config, @_fields)->
 		@_config.cache ||= false
 		@_resolved = true
 
@@ -137,15 +137,22 @@ class root.TastyResourceFactory
 	_create_resource: (data)->
 		resource = new TastyResourceFactory(@$http, @_config)
 		for key, value of data
+      if @_fields[key]
+        resource["get_#{key}"] = (RelatedResource) ->
+          return RelatedResource.get(data)
+        resource["get_#{key}"].$inject = [@_fields[key]]
 			resource[key] = value
 
 		return resource
 
-
-
 module = angular.module("tastyResource", [])
 
 module.factory "TastyResource", ["$http", ($http)->
-	(config)->
-		new TastyResourceFactory($http, config)
+	(config, fields)->
+		new TastyResourceFactory($http, config, fields)
 ]
+
+module.factory "TastyFields", () ->
+  () ->
+    new TastyFields()
+    
